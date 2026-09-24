@@ -24,9 +24,11 @@ jobs:
           node-version: '20'
 
       - name: Install Dependencies
+        working-directory: ./backend
         run: npm install
 
       - name: Run Tests
+        working-directory: ./backend
         run: npm test
 
   deploy:
@@ -38,9 +40,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-      - name: Checkout Code
-        uses: actions/checkout@v4
 
       - name: Deployment
         run: echo "AgriAssist deployment successful"
