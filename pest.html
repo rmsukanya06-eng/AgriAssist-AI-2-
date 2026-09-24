@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pest Detection</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+display:flex;
+background:#f4fff4;
+}
+
+/* Sidebar */
+
+.sidebar{
+width:250px;
+height:100vh;
+background:#2e7d32;
+position:fixed;
+padding-top:20px;
+}
+
+.sidebar h2{
+text-align:center;
+color:white;
+margin-bottom:30px;
+}
+
+.sidebar a{
+display:block;
+padding:15px 25px;
+color:white;
+text-decoration:none;
+}
+
+.sidebar a:hover{
+background:#1b5e20;
+}
+
+/* Main Content */
+
+.main{
+margin-left:250px;
+padding:30px;
+width:100%;
+}
+
+.main h1{
+color:#2e7d32;
+margin-bottom:20px;
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+max-width:800px;
+}
+
+input[type="file"]{
+width:100%;
+padding:10px;
+margin:15px 0;
+}
+
+button{
+background:#2e7d32;
+color:white;
+padding:12px 20px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+}
+
+button:hover{
+background:#1b5e20;
+}
+
+.preview{
+margin-top:20px;
+}
+
+.preview img{
+max-width:300px;
+border-radius:10px;
+display:none;
+}
+
+.result{
+margin-top:20px;
+padding:15px;
+background:#e8f5e9;
+border-left:5px solid #2e7d32;
+display:none;
+}
+
+.result h3{
+color:#2e7d32;
+margin-bottom:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<h2>🌱 AgriAssist AI</h2>
+
+<a href="dashboard.html">🏠 Dashboard</a>
+<a href="profile.html">👤 My Profile</a>
+<a href="farms.html">🚜 My Farms</a>
+<a href="addfarm.html">➕ Add Farm</a>
+<a href="fertilizer.html">🌱 Fertilizer Calculator</a>
+<a href="disease.html">🌿 Disease Detection</a>
+<a href="pest.html">🐛 Pest Detection</a>
+<a href="login.html">🚪 Logout</a>
+
+</div>
+
+<div class="main">
+
+<h1>🐛 Pest Detection</h1>
+
+<div class="card">
+
+<h3>Upload Crop Image</h3>
+
+<input type="file" id="imageInput" accept="image/*">
+
+<button onclick="detectPest()">
+Detect Pest
+</button>
+
+<div class="preview">
+<img id="previewImage">
+</div>
+
+<div class="result" id="resultBox">
+
+<h3>Detection Result</h3>
+
+<p><strong>Pest Name:</strong> Armyworm</p>
+
+<p><strong>Confidence:</strong> 94%</p>
+
+<p><strong>Affected Crop:</strong> Maize</p>
+
+<p><strong>Control Measure:</strong>
+Apply suitable pesticide and regularly monitor crop health.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const imageInput =
+document.getElementById("imageInput");
+
+const previewImage =
+document.getElementById("previewImage");
+
+imageInput.addEventListener("change",function(){
+
+const file=this.files[0];
+
+if(file){
+
+previewImage.src=
+URL.createObjectURL(file);
+
+previewImage.style.display="block";
+
+}
+
+});
+
+function detectPest(){
+
+if(imageInput.files.length===0){
+
+alert("Please upload an image");
+
+return;
+
+}
+
+document.getElementById("resultBox")
+.style.display="block";
+
+}
+
+</script>
+
+</body>
+</html>

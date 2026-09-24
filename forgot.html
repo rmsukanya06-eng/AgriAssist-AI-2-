@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forgot Password - AgriAssist AI</title>
+
+<style>
+
+:root{
+--primary:#2e7d32;
+--secondary:#4caf50;
+--light:#f4fff4;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:var(--light);
+min-height:100vh;
+}
+
+/* Navbar */
+
+header{
+background:var(--primary);
+padding:15px 8%;
+}
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+color:white;
+font-size:28px;
+font-weight:bold;
+}
+
+.nav-links{
+display:flex;
+list-style:none;
+gap:20px;
+}
+
+.nav-links a{
+text-decoration:none;
+color:white;
+font-weight:600;
+}
+
+.nav-links a:hover{
+color:#ffeb3b;
+}
+
+/* Forgot Password Card */
+
+.container{
+display:flex;
+justify-content:center;
+align-items:center;
+padding:60px 20px;
+}
+
+.forgot-card{
+background:white;
+width:450px;
+padding:35px;
+border-radius:20px;
+box-shadow:0 10px 25px rgba(0,0,0,.1);
+}
+
+.forgot-card h1{
+text-align:center;
+color:#1b5e20;
+margin-bottom:10px;
+}
+
+.forgot-card p{
+text-align:center;
+color:#666;
+margin-bottom:25px;
+}
+
+.form-group{
+margin-bottom:18px;
+}
+
+label{
+display:block;
+margin-bottom:8px;
+font-weight:600;
+}
+
+input{
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+button{
+width:100%;
+padding:12px;
+background:var(--primary);
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+}
+
+button:hover{
+background:#1b5e20;
+}
+
+.back-link{
+text-align:center;
+margin-top:15px;
+}
+
+.back-link a{
+text-decoration:none;
+color:var(--primary);
+font-weight:600;
+}
+
+/* Footer */
+
+footer{
+background:var(--primary);
+color:white;
+text-align:center;
+padding:20px;
+margin-top:40px;
+}
+
+@media(max-width:768px){
+
+nav{
+flex-direction:column;
+gap:15px;
+}
+
+.nav-links{
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.forgot-card{
+width:100%;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<nav>
+
+<div class="logo">
+🌱 AgriAssist AI
+</div>
+
+<ul class="nav-links">
+<li><a href="landing.html">Home</a></li>
+<li><a href="about.html">About Us</a></li>
+<li><a href="contact.html">Contact</a></li>
+<li><a href="login.html">Login</a></li>
+</ul>
+
+</nav>
+
+</header>
+
+<div class="container">
+
+<div class="forgot-card">
+
+<h1>Forgot Password</h1>
+
+<p>Enter your registered email to receive a password reset link.</p>
+
+<form id="forgotForm">
+
+<div class="form-group">
+<label>Email Address</label>
+<input type="email"
+id="email"
+placeholder="Enter Registered Email"
+required>
+</div>
+
+<button type="submit">
+Send Reset Link
+</button>
+
+<div class="back-link">
+<a href="login.html">← Back to Login</a>
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+<footer>
+
+<h3>AgriAssist AI</h3>
+
+<p>Smart Farming • Better Future</p>
+
+</footer>
+
+<script>
+
+document.getElementById("forgotForm")
+.addEventListener("submit",function(e){
+
+e.preventDefault();
+
+let email =
+document.getElementById("email").value;
+
+if(email===""){
+alert("❌ Please enter your email");
+return;
+}
+
+alert("✅ Password reset link sent to your email!");
+
+window.location.href="login.html";
+
+});
+
+</script>
+
+</body>
+</html>

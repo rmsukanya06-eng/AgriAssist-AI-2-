@@ -1,0 +1,39 @@
+AGRIASSIST AI - LOCAL MONGODB SETUP
+
+1. Make sure MongoDB Community Server is running.
+2. Open MongoDB Compass and connect to:
+   mongodb://127.0.0.1:27017
+3. Open Command Prompt inside:
+   Agri_Assist-main\backend
+4. Run:
+   npm install
+5. Create a file named .env inside backend with:
+   MONGO_URI=mongodb://127.0.0.1:27017/agriassist
+   PORT=3000
+6. Run:
+   npm start
+7. Keep the CMD window open.
+8. Open the website through the Node server, NOT by double-clicking HTML files:
+   http://localhost:3000/register.html
+9. Register a user. Then check Compass > agriassist > users.
+10. Login at:
+   http://localhost:3000/login.html
+11. Add a farm at:
+   http://localhost:3000/addfarm.html
+12. Check Compass > agriassist > farms.
+
+Admin demo login remains:
+Username: admin
+Password: admin123
+
+Note: farmer passwords are hashed with bcryptjs before storage.
+
+
+CRUD mapping:
+C - POST /api/farms        -> Add Farm
+R - GET /api/farms         -> My Farms
+U - PUT /api/farms/:id     -> Edit Farm
+D - DELETE /api/farms/:id  -> Remove Farm
+
+On My Farms, MongoDB farms have Edit and Remove buttons. Edit updates the
+selected document in MongoDB, and Remove deletes it.

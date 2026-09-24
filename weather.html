@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weather Advice - AgriAssist AI</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+display:flex;
+background:#f4fff4;
+}
+
+/* Sidebar */
+
+.sidebar{
+width:250px;
+height:100vh;
+background:#2e7d32;
+position:fixed;
+padding-top:20px;
+}
+
+.sidebar h2{
+text-align:center;
+color:white;
+margin-bottom:30px;
+}
+
+.sidebar a{
+display:block;
+padding:15px 25px;
+color:white;
+text-decoration:none;
+}
+
+.sidebar a:hover{
+background:#1b5e20;
+}
+
+/* Main */
+
+.main{
+margin-left:250px;
+padding:30px;
+width:100%;
+}
+
+.main h1{
+color:#2e7d32;
+margin-bottom:25px;
+}
+
+.weather-card{
+background:white;
+max-width:650px;
+padding:30px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.weather-card h2{
+color:#2e7d32;
+margin-bottom:20px;
+}
+
+.form-group{
+margin-bottom:20px;
+}
+
+label{
+display:block;
+margin-bottom:8px;
+font-weight:bold;
+}
+
+input{
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:8px;
+font-size:16px;
+}
+
+.result{
+margin-top:25px;
+background:#f4fff4;
+padding:20px;
+border-radius:10px;
+}
+
+.result p{
+margin-bottom:12px;
+font-size:18px;
+}
+
+</style>
+</head>
+
+<body ng-app="agriApp">
+
+<!-- Sidebar -->
+
+<div class="sidebar">
+
+<h2>🌱 AgriAssist AI</h2>
+
+<a href="dashboard.html">🏠 Dashboard</a>
+<a href="profile.html">👤 My Profile</a>
+<a href="farms.html">🚜 My Farms</a>
+<a href="addfarm.html">➕ Add Farm</a>
+<a href="fertilizer.html">🌱 Fertilizer Calculator</a>
+<a href="disease.html">🌿 Disease Detection</a>
+<a href="pest.html">🐛 Pest Detection</a>
+<a href="weather.html">☁ Weather Advice</a>
+<a href="assistant.html">🤖 AI Assistant</a>
+<a href="login.html">🚪 Logout</a>
+
+</div>
+
+<!-- Main -->
+
+<div class="main">
+
+<h1>☁ Weather Advice</h1>
+
+<div class="weather-card" ng-controller="weatherCtrl">
+
+    <h2>Today's Weather</h2>
+
+    <div class="form-group">
+
+        <label>Enter Temperature (°C)</label>
+
+        <input type="number"
+               ng-model="temperature"
+               ng-change="updateAdvice()">
+
+    </div>
+
+    <weather-box></weather-box>
+
+</div>
+<script>
+
+var app = angular.module("agriApp", []);
+
+/* FACTORY */
+
+app.factory("weatherFactory", function(){
+
+    return {
+
+        getAdvice:function(temp){
+
+            if(temp >= 40)
+                return "🌞 Extremely Hot! Water crops twice a day.";
+
+            else if(temp >= 30)
+                return "☀ Sunny Weather. Good for harvesting and irrigation.";
+
+            else if(temp >= 20)
+                return "🌤 Pleasant Weather. Best time for farming activities.";
+
+            else
+                return "🌧 Cold Weather. Reduce irrigation and protect crops.";
+
+        }
+
+    };
+
+});
+
+/* CUSTOM DIRECTIVE */
+
+app.directive("weatherBox", function(){
+
+    return {
+
+        restrict: "E",
+
+        template:
+            '<div class="result">' +
+            '<p><strong>Temperature:</strong> {{temperature}} °C</p>' +
+            '<p><strong>Weather Advice:</strong> {{advice}}</p>' +
+            '</div>'
+
+    };
+
+});
+
+/* CONTROLLER */
+
+app.controller("weatherCtrl", function($scope, weatherFactory){
+
+    $scope.temperature = 30;
+
+    $scope.updateAdvice = function(){
+
+        $scope.advice =
+            weatherFactory.getAdvice($scope.temperature);
+
+    };
+
+    $scope.updateAdvice();
+
+});
+</script>
+
+</body>
+</html>

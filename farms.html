@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.min.js"></script>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Farms - AgriAssist AI</title>
+
+
+
+<style>
+
+
+
+*{
+
+margin:0;
+
+padding:0;
+
+box-sizing:border-box;
+
+font-family:'Segoe UI',sans-serif;
+
+}
+
+
+
+body{
+
+display:flex;
+
+background:#f4fff4;
+
+}
+
+
+
+/* Sidebar */
+
+
+
+.sidebar{
+
+width:250px;
+
+height:100vh;
+
+background:#2e7d32;
+
+position:fixed;
+
+padding-top:20px;
+
+}
+
+
+
+.sidebar h2{
+
+text-align:center;
+
+color:white;
+
+margin-bottom:30px;
+
+}
+
+
+
+.sidebar a{
+
+display:block;
+
+padding:15px 25px;
+
+color:white;
+
+text-decoration:none;
+
+}
+
+
+
+.sidebar a:hover{
+
+background:#1b5e20;
+
+}
+
+
+
+/* Main */
+
+
+
+.main{
+
+margin-left:250px;
+
+padding:30px;
+
+width:100%;
+
+}
+
+
+
+.main h1{
+
+color:#2e7d32;
+
+margin-bottom:20px;
+
+}
+
+
+
+.top-bar{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:25px;
+
+}
+
+
+
+.add-btn{
+
+background:#2e7d32;
+
+color:white;
+
+padding:10px 18px;
+
+text-decoration:none;
+
+border-radius:8px;
+
+}
+
+
+
+.add-btn:hover{
+
+background:#1b5e20;
+
+}
+
+
+
+/* Farm Cards */
+
+
+
+.farm-container{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+
+gap:20px;
+
+}
+
+
+
+.farm-card{
+
+background:white;
+
+padding:20px;
+
+border-radius:15px;
+
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+
+}
+
+
+
+.farm-card h3{
+
+color:#2e7d32;
+
+margin-bottom:10px;
+
+}
+
+
+
+.farm-card p{
+
+margin-bottom:8px;
+
+color:#555;
+
+}
+
+
+/* Starting state */
+.farm-card.ng-enter {
+    opacity: 0;
+    transform: translateY(60px) scale(0.85);
+}
+
+/* Entering animation */
+.farm-card.ng-enter-active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition:
+        opacity 0.7s ease,
+        transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+
+/* Starting state before removal */
+.farm-card.ng-leave {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+}
+
+/* Removing animation */
+.farm-card.ng-leave-active {
+    opacity: 0;
+    transform: translateX(150px) scale(0.7) rotate(5deg);
+    transition:
+        opacity 0.6s ease,
+        transform 0.6s ease;
+}
+
+
+.status{
+
+display:inline-block;
+
+background:#d4edda;
+
+color:#155724;
+
+padding:5px 10px;
+
+border-radius:5px;
+
+font-size:14px;
+
+margin-top:10px;
+
+}
+
+
+
+
+/* CRUD Edit Modal */
+.modal-backdrop{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+}
+
+.edit-modal{
+    background:white;
+    width:min(520px,92%);
+    padding:28px;
+    border-radius:16px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.25);
+}
+
+.edit-modal h2{
+    color:#2e7d32;
+    margin-bottom:18px;
+}
+
+.edit-group{
+    margin-bottom:14px;
+}
+
+.edit-group label{
+    display:block;
+    font-weight:600;
+    margin-bottom:6px;
+}
+
+.edit-group input,
+.edit-group select,
+.edit-group textarea{
+    width:100%;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-family:inherit;
+}
+
+.edit-group textarea{
+    resize:vertical;
+    min-height:70px;
+}
+
+.modal-actions{
+    display:flex;
+    gap:10px;
+    margin-top:18px;
+}
+
+.modal-actions button{
+    border:none;
+    padding:10px 16px;
+    border-radius:7px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.update-btn{
+    background:#2e7d32;
+    color:white;
+}
+
+.cancel-btn{
+    background:#eeeeee;
+    color:#333;
+}
+
+</style>
+
+</head>
+
+
+
+<body ng-app="agriApp" ng-controller="FarmController">
+
+
+
+<div class="sidebar">
+
+
+
+<h2>🌱 AgriAssist AI</h2>
+
+
+
+<a href="dashboard.html">🏠 Dashboard</a>
+
+<a href="profile.html">👤 My Profile</a>
+
+<a href="farms.html">🚜 My Farms</a>
+
+<a href="addfarm.html">➕ Add Farm</a>
+
+<a href="fertilizer.html">🌱 Fertilizer Calculator</a>
+
+<a href="disease.html">🌿 Disease Detection</a>
+
+<a href="pest.html">🐛 Pest Detection</a>
+
+<a href="login.html">🚪 Logout</a>
+
+
+
+</div>
+
+
+
+<div class="main">
+
+
+
+<div class="top-bar">
+
+<h1>🚜 My Farms</h1>
+
+
+
+<a href="addfarm.html" class="add-btn">
+
++ Add Farm
+
+</a>
+
+</div>
+
+<div class="farm-card" style="margin-bottom:25px;background:#e8f5e9;">
+
+
+
+<h3>🌱 Today's Farming Tip</h3>
+
+
+<p>{{tips}}</p>
+<p><strong>Date:</strong> {{today | date:'dd/MM/yyyy'}}</p>
+
+
+</div>
+
+<div class="farm-card" style="margin-bottom:25px;background:#fff8e1;">
+
+    <h3>📊 Farm Status</h3>
+
+    <p><strong>🌱 Active Farms:</strong> {{farmStatus.active}}</p>
+
+    <p><strong>⏸️ Inactive Farms:</strong> {{farmStatus.inactive}}</p>
+
+</div>
+
+<div class="farm-container">
+
+    <div class="farm-card"
+     farm-card
+     ng-repeat="farm in farms track by $index">
+        <h3>{{farm.name}}</h3>
+
+        <p><strong>🌾 Crop:</strong> {{farm.crop}}</p>
+
+        <p><strong>📏 Area:</strong> {{farm.area}} Acres</p>
+
+        <p><strong>📍 Location:</strong> {{farm.location}}</p>
+
+        <p>
+            <strong>Status:</strong>
+
+            <span class="status"
+                  ng-style="{
+                    'background': farm.status=='Active' ? '#d4edda' : '#f8d7da',
+                    'color': farm.status=='Active' ? '#155724' : '#721c24'
+                  }">
+
+                {{farm.status}}
+
+            </span>
+
+        </p>
+
+        <br>
+
+        <div ng-if="!farm.defaultFarm" style="display:flex;gap:10px;flex-wrap:wrap;">
+
+            <button
+                ng-click="openEditFarm(farm)"
+                style="background:#1976d2;color:white;border:none;padding:8px 15px;border-radius:6px;cursor:pointer;">
+
+                ✏️ Edit
+
+            </button>
+
+            <button
+                ng-click="removeFarm($index)"
+                style="background:#d32f2f;color:white;border:none;padding:8px 15px;border-radius:6px;cursor:pointer;">
+
+                🗑 Remove
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+</div>
+
+
+<!-- UPDATE FARM MODAL -->
+<div class="modal-backdrop" ng-if="showEditModal">
+    <div class="edit-modal">
+        <h2>✏️ Update Farm</h2>
+
+        <div class="edit-group">
+            <label>Farm Name</label>
+            <input type="text" ng-model="editFarm.farmName">
+        </div>
+
+        <div class="edit-group">
+            <label>Crop Type</label>
+            <select ng-model="editFarm.crop">
+                <option value="Paddy">Paddy</option>
+                <option value="Sugarcane">Sugarcane</option>
+                <option value="Tomato">Tomato</option>
+                <option value="Banana">Banana</option>
+                <option value="Cotton">Cotton</option>
+            </select>
+        </div>
+
+        <div class="edit-group">
+            <label>Farm Area (Acres)</label>
+            <input type="number" min="0.1" ng-model="editFarm.area">
+        </div>
+
+        <div class="edit-group">
+            <label>Location</label>
+            <input type="text" ng-model="editFarm.location">
+        </div>
+
+        <div class="edit-group">
+            <label>Description</label>
+            <textarea ng-model="editFarm.description"></textarea>
+        </div>
+
+        <div class="edit-group">
+            <label>Status</label>
+            <select ng-model="editFarm.status">
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+            </select>
+        </div>
+
+        <div class="modal-actions">
+            <button class="update-btn" ng-click="updateFarm()">💾 Update</button>
+            <button class="cancel-btn" ng-click="closeEditFarm()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+var app = angular.module("agriApp", ["ngAnimate"]);
+
+app.directive("farmCard", function(){
+
+    return {
+
+        restrict: "A",
+
+        link: function(scope, element){
+
+            /* Mouse Enter */
+
+            element.on("mouseenter", function(){
+
+                element.css({
+                    "transform": "translateY(-8px)",
+                    "box-shadow": "0 12px 25px rgba(0,0,0,0.18)"
+                });
+
+            });
+
+            /* Mouse Leave */
+
+            element.on("mouseleave", function(){
+
+                element.css({
+                    "transform": "translateY(0)",
+                    "box-shadow": "0 5px 15px rgba(0,0,0,0.1)"
+                });
+
+            });
+
+            /* Remove event listeners when element is destroyed */
+
+            scope.$on("$destroy", function(){
+
+                element.off("mouseenter");
+                element.off("mouseleave");
+
+            });
+
+        }
+
+    };
+
+});
+
+/* Value Dependency */
+app.value("tips",[
+    "Water crops early in the morning.",
+    "Use organic fertilizers regularly.",
+    "Check soil moisture before irrigation.",
+    "Rotate crops every season.",
+    "Remove weeds regularly for healthy crop growth."
+]);
+
+/* Service */
+app.service("TipService", function(tips){
+
+    this.getRandomTip = function(){
+        var index = Math.floor(Math.random() * tips.length);
+        return tips[index];
+    };
+
+    this.removeFarm = function(farms,index){
+        farms.splice(index,1);
+        localStorage.setItem("farms",
+            JSON.stringify(farms.filter(f=>!f.defaultFarm)));
+    };
+
+    this.countFarms = function(farms){
+
+    var active = 0;
+    var inactive = 0;
+
+    farms.forEach(function(farm){
+
+        if(farm.status && farm.status.toLowerCase() === "active"){
+            active++;
+        }
+
+        if(farm.status && farm.status.toLowerCase() === "inactive"){
+            inactive++;
+        }
+
+    });
+
+    return {
+        active: active,
+        inactive: inactive
+    };
+
+};
+
+});
+
+/* Controller */
+
+app.controller("FarmController", function($scope, TipService, $http) {
+
+    $scope.today = new Date();
+    $scope.tips = TipService.getRandomTip();
+    $scope.showEditModal = false;
+    $scope.editFarm = {};
+
+    // Default sample farms shown in the UI only.
+    $scope.farms = [
+        { name: "Green Valley Farm", crop: "Paddy", area: "5", location: "Madurai", status: "Active", defaultFarm: true },
+        { name: "Sunrise Farm", crop: "Sugarcane", area: "3", location: "Dindigul", status: "Active", defaultFarm: true },
+        { name: "Organic Farm", crop: "Tomato", area: "2", location: "Theni", status: "Active", defaultFarm: true }
+    ];
+
+    $scope.farmStatus = TipService.countFarms($scope.farms);
+    const userId = localStorage.getItem("userId");
+
+    if (!userId) {
+        alert("Please login as a farmer to view your farms.");
+        window.location.href = "login.html";
+        return;
+    }
+
+    // READ
+    $http.get("/api/farms?userId=" + encodeURIComponent(userId))
+        .then(function(response) {
+            response.data.forEach(function(farm) {
+                $scope.farms.push({
+                    _id: farm._id,
+                    name: farm.farmName,
+                    crop: farm.crop,
+                    area: farm.area,
+                    location: farm.location,
+                    description: farm.description,
+                    status: farm.status || "Active",
+                    defaultFarm: false
+                });
+            });
+
+            $scope.farmStatus = TipService.countFarms($scope.farms);
+        })
+        .catch(function(error) {
+            console.error(error);
+            alert("Unable to load farms from MongoDB.");
+        });
+
+    // UPDATE - open the edit form
+    $scope.openEditFarm = function(farm) {
+        $scope.editFarm = {
+            _id: farm._id,
+            farmName: farm.name,
+            crop: farm.crop,
+            area: farm.area,
+            location: farm.location,
+            description: farm.description || "",
+            status: farm.status || "Active"
+        };
+
+        $scope.showEditModal = true;
+    };
+
+    $scope.closeEditFarm = function() {
+        $scope.showEditModal = false;
+        $scope.editFarm = {};
+    };
+
+    // UPDATE - save changes to MongoDB
+    $scope.updateFarm = function() {
+        const farm = $scope.editFarm;
+
+        if (!farm.farmName || !farm.crop || !farm.area || !farm.location) {
+            alert("❌ Please fill all required farm fields.");
+            return;
+        }
+
+        if (Number(farm.area) <= 0) {
+            alert("❌ Farm area must be greater than 0.");
+            return;
+        }
+
+        $http.put("/api/farms/" + farm._id, {
+            userId: userId,
+            farmName: farm.farmName,
+            crop: farm.crop,
+            area: Number(farm.area),
+            location: farm.location,
+            description: farm.description || "",
+            status: farm.status || "Active"
+        })
+        .then(function(response) {
+            const updated = response.data.farm;
+
+            for (let i = 0; i < $scope.farms.length; i++) {
+                if ($scope.farms[i]._id === updated._id) {
+                    $scope.farms[i].name = updated.farmName;
+                    $scope.farms[i].crop = updated.crop;
+                    $scope.farms[i].area = updated.area;
+                    $scope.farms[i].location = updated.location;
+                    $scope.farms[i].description = updated.description;
+                    $scope.farms[i].status = updated.status;
+                    break;
+                }
+            }
+
+            $scope.farmStatus = TipService.countFarms($scope.farms);
+            $scope.closeEditFarm();
+            alert("✅ Farm updated successfully!");
+        })
+        .catch(function(error) {
+            console.error(error);
+            const message = error.data && error.data.message
+                ? error.data.message
+                : "Unable to update farm.";
+            alert("❌ " + message);
+        });
+    };
+
+    // DELETE
+    $scope.removeFarm = function(index) {
+        const farm = $scope.farms[index];
+
+        if (farm.defaultFarm) {
+            return;
+        }
+
+        if (!confirm("Delete this farm permanently from MongoDB?")) {
+            return;
+        }
+
+        $http.delete("/api/farms/" + farm._id + "?userId=" + encodeURIComponent(userId))
+            .then(function(response) {
+                alert("✅ " + response.data.message);
+                $scope.farms.splice(index, 1);
+                $scope.farmStatus = TipService.countFarms($scope.farms);
+            })
+            .catch(function(error) {
+                console.error(error);
+                const message = error.data && error.data.message
+                    ? error.data.message
+                    : "Unable to delete farm.";
+                alert("❌ " + message);
+            });
+    };
+
+});
+
+</script>
+
+</body>
+
+</html>

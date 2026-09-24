@@ -1,0 +1,31 @@
+AGRIASSIST AI - MONGODB CRUD OPERATIONS
+
+CRUD stands for Create, Read, Update and Delete.
+
+CREATE
+POST /api/farms
+Add Farm creates a new document in the farms collection.
+
+READ
+GET /api/farms?userId=<logged-in-user-id>
+My Farms reads the user's farm documents from MongoDB.
+
+UPDATE
+PUT /api/farms/:id
+Edit Farm modifies the selected MongoDB document using findOneAndUpdate().
+
+DELETE
+DELETE /api/farms/:id
+Remove Farm deletes the selected MongoDB document using findOneAndDelete().
+
+DATABASE
+MongoDB: mongodb://127.0.0.1:27017
+Database: agriassist
+Collections: users, farms
+
+VIVA ANSWER
+"CRUD stands for Create, Read, Update and Delete. In my AgriAssist project,
+Create is implemented through Add Farm, Read through My Farms, Update through
+Edit Farm, and Delete through Remove Farm. The frontend sends HTTP requests
+to the Express backend, and the backend performs the corresponding MongoDB
+operations using Mongoose."

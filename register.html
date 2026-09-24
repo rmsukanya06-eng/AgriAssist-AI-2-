@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register - AgriAssist AI</title>
+
+<style>
+
+:root{
+--primary:#2e7d32;
+--secondary:#4caf50;
+--light:#f4fff4;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:var(--light);
+min-height:100vh;
+}
+
+/* Navbar */
+
+header{
+background:var(--primary);
+padding:15px 8%;
+}
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+color:white;
+font-size:28px;
+font-weight:bold;
+}
+
+.nav-links{
+display:flex;
+list-style:none;
+gap:20px;
+}
+
+.nav-links a{
+text-decoration:none;
+color:white;
+font-weight:600;
+}
+
+.nav-links a:hover{
+color:#ffeb3b;
+}
+
+/* Register Form */
+
+.container{
+display:flex;
+justify-content:center;
+align-items:center;
+padding:50px 20px;
+}
+
+.register-card{
+background:white;
+width:500px;
+padding:35px;
+border-radius:20px;
+box-shadow:0 10px 25px rgba(0,0,0,.1);
+}
+
+.register-card h1{
+text-align:center;
+color:#1b5e20;
+margin-bottom:10px;
+}
+
+.register-card p{
+text-align:center;
+color:#666;
+margin-bottom:25px;
+}
+
+.form-group{
+margin-bottom:18px;
+}
+
+label{
+display:block;
+margin-bottom:8px;
+font-weight:600;
+}
+
+input{
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+button{
+width:100%;
+padding:12px;
+background:var(--primary);
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+}
+
+button:hover{
+background:#1b5e20;
+}
+
+.login-link{
+text-align:center;
+margin-top:15px;
+}
+
+.login-link a{
+text-decoration:none;
+color:var(--primary);
+font-weight:600;
+}
+
+/* Footer */
+
+footer{
+background:var(--primary);
+color:white;
+text-align:center;
+padding:20px;
+margin-top:40px;
+}
+
+@media(max-width:768px){
+
+nav{
+flex-direction:column;
+gap:15px;
+}
+
+.nav-links{
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.register-card{
+width:100%;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<nav>
+
+<div class="logo">
+🌱 AgriAssist AI
+</div>
+
+<ul class="nav-links">
+<li><a href="landing.html">Home</a></li>
+<li><a href="about.html">About Us</a></li>
+<li><a href="contact.html">Contact</a></li>
+<li><a href="login.html">Login</a></li>
+</ul>
+
+</nav>
+
+</header>
+
+<div class="container">
+
+<div class="register-card">
+
+<h1>Create Account</h1>
+
+<p>Register to access AgriAssist AI services</p>
+
+<form id="registerForm">
+
+<div class="form-group">
+<label>Full Name</label>
+<input type="text"
+id="fullname"
+placeholder="Enter Full Name"
+required>
+</div>
+
+<div class="form-group">
+<label>Email</label>
+<input type="email"
+id="email"
+placeholder="Enter Email Address"
+required>
+</div>
+
+<div class="form-group">
+<label>Username</label>
+<input type="text"
+id="username"
+placeholder="Choose Username"
+required>
+</div>
+
+<div class="form-group">
+<label>Password</label>
+<input type="password"
+id="password"
+placeholder="Enter Password"
+required>
+</div>
+
+<div class="form-group">
+<label>Confirm Password</label>
+<input type="password"
+id="confirmPassword"
+placeholder="Confirm Password"
+required>
+</div>
+
+<button type="submit">
+Register
+</button>
+
+<div class="login-link">
+Already have an account?
+<a href="login.html">Login Here</a>
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+<footer>
+
+<h3>AgriAssist AI</h3>
+
+<p>Smart Farming • Better Future</p>
+
+</footer>
+
+<script>
+
+document.getElementById("registerForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("fullname").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    if (!/^[A-Za-z ]+$/.test(name)) {
+        alert("❌ Full Name should contain only letters");
+        return;
+    }
+
+    if (!/^[A-Za-z]+$/.test(username)) {
+        alert("❌ Username should contain only letters");
+        return;
+    }
+
+    if (password.length < 6) {
+        alert("❌ Password must contain at least 6 characters");
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        alert("❌ Passwords do not match");
+        return;
+    }
+
+    try {
+        const response = await fetch("/api/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, username, email, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert("✅ Registration Successful!\n\nYou can now login.");
+            document.getElementById("registerForm").reset();
+            window.location.href = "login.html";
+        } else {
+            alert("❌ " + data.message);
+        }
+    } catch (error) {
+        console.error(error);
+        alert("❌ Cannot connect to server. Make sure Node.js is running.");
+    }
+});
+
+</script>
+
+</body>
+</html>

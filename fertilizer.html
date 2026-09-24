@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fertilizer Calculator - AgriAssist AI</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+display:flex;
+background:#f4fff4;
+}
+
+/* Sidebar */
+
+.sidebar{
+width:250px;
+height:100vh;
+background:#2e7d32;
+position:fixed;
+padding-top:20px;
+}
+
+.sidebar h2{
+text-align:center;
+color:white;
+margin-bottom:30px;
+}
+
+.sidebar a{
+display:block;
+padding:15px 25px;
+color:white;
+text-decoration:none;
+}
+
+.sidebar a:hover{
+background:#1b5e20;
+}
+
+/* Main */
+
+.main{
+margin-left:250px;
+padding:40px;
+width:100%;
+}
+
+.main h1{
+color:#2e7d32;
+margin-bottom:25px;
+}
+
+.calculator{
+background:white;
+padding:30px;
+max-width:500px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.calculator label{
+display:block;
+margin-bottom:8px;
+font-weight:bold;
+}
+
+.calculator input{
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:8px;
+margin-bottom:20px;
+font-size:16px;
+}
+
+.result{
+background:#e8f5e9;
+padding:15px;
+border-radius:10px;
+font-size:20px;
+color:#2e7d32;
+font-weight:bold;
+text-align:center;
+margin-top:15px;
+}
+
+.info{
+margin-top:20px;
+background:#fff8e1;
+padding:15px;
+border-radius:10px;
+color:#555;
+}
+
+</style>
+
+</head>
+
+<body ng-app="agriApp" ng-controller="FertilizerController">
+
+<!-- Sidebar -->
+
+<div class="sidebar">
+
+<h2>🌱 AgriAssist AI</h2>
+
+<a href="dashboard.html">🏠 Dashboard</a>
+<a href="profile.html">👤 My Profile</a>
+<a href="farms.html">🚜 My Farms</a>
+<a href="addfarm.html">➕ Add Farm</a>
+<a href="fertilizer.html">🌱 Fertilizer Calculator</a>
+<a href="disease.html">🌿 Disease Detection</a>
+<a href="pest.html">🐛 Pest Detection</a>
+<a href="login.html">🚪 Logout</a>
+
+</div>
+
+<!-- Main -->
+
+<div class="main">
+
+<h1>🌱 Fertilizer Calculator</h1>
+
+<div class="calculator">
+
+<label>Enter Farm Area (Acres)</label>
+
+<input
+type="number"
+ng-model="area"
+placeholder="Example: 5">
+
+<div class="result">
+
+Required Fertilizer
+
+<br><br>
+
+{{ calculateFertilizer() | number:2 }} kg
+
+</div>
+
+<div class="info">
+
+<b>Calculation:</b>
+
+<br>
+
+1 Acre = {{fertilizerPerAcre}} kg Fertilizer
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+var app = angular.module("agriApp",[]);
+
+/* Value Dependency */
+
+app.value("fertilizerPerAcre",50);
+
+/* Service Dependency */
+
+app.service("FertilizerService",function(fertilizerPerAcre){
+
+this.calculate=function(area){
+
+if(!area)
+return 0;
+
+return area*fertilizerPerAcre;
+
+};
+
+});
+
+/* Controller */
+
+app.controller("FertilizerController",
+
+function($scope,FertilizerService,fertilizerPerAcre){
+
+$scope.area="";
+
+$scope.fertilizerPerAcre=fertilizerPerAcre;
+
+$scope.calculateFertilizer=function(){
+
+return FertilizerService.calculate($scope.area);
+
+};
+
+});
+
+</script>
+
+</body>
+</html>

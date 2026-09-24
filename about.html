@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us - AgriAssist AI</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+:root{
+--primary:#2e7d32;
+--secondary:#4caf50;
+--light:#f4fff4;
+}
+
+body{
+background:var(--light);
+}
+
+/* Navbar */
+
+header{
+background:var(--primary);
+padding:15px 8%;
+}
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+color:white;
+font-size:28px;
+font-weight:bold;
+}
+
+.nav-links{
+display:flex;
+list-style:none;
+gap:25px;
+}
+
+.nav-links a{
+text-decoration:none;
+color:white;
+font-weight:600;
+}
+
+.nav-links a:hover{
+color:#ffeb3b;
+}
+
+/* About Section */
+
+.about{
+padding:60px 8%;
+text-align:center;
+}
+
+.about h1{
+font-size:42px;
+color:#1b5e20;
+margin-bottom:20px;
+}
+
+.about p{
+font-size:18px;
+line-height:1.8;
+color:#555;
+max-width:900px;
+margin:auto;
+}
+
+/* Mission Cards */
+
+.cards{
+padding:40px 8%;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+text-align:center;
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.card h3{
+color:var(--primary);
+margin-bottom:10px;
+}
+
+.card p{
+color:#666;
+}
+
+/* Stats */
+
+.stats{
+padding:40px 8%;
+display:flex;
+justify-content:center;
+gap:30px;
+flex-wrap:wrap;
+}
+
+.stat-box{
+background:white;
+padding:25px;
+border-radius:15px;
+width:220px;
+text-align:center;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.stat-box h2{
+color:var(--primary);
+margin-bottom:10px;
+}
+
+/* Footer */
+
+footer{
+margin-top:40px;
+background:var(--primary);
+color:white;
+text-align:center;
+padding:20px;
+}
+
+@media(max-width:768px){
+
+nav{
+flex-direction:column;
+gap:15px;
+}
+
+.nav-links{
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.about h1{
+font-size:32px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<nav>
+
+<div class="logo">
+🌱 AgriAssist AI
+</div>
+
+<ul class="nav-links">
+<li><a href="landing.html">Home</a></li>
+<li><a href="contact.html">Contact</a></li>
+<li><a href="login.html">Login</a></li>
+<li><a href="register.html">Register</a></li>
+</ul>
+
+</nav>
+
+</header>
+
+<section class="about">
+
+<h1>About Us</h1>
+
+<p>
+AgriAssist AI is an intelligent farming assistant designed to help farmers
+improve crop productivity and make better agricultural decisions.
+The platform provides crop disease detection, weather-based advice,
+AI-powered guidance, and farming recommendations to support modern agriculture.
+</p>
+
+</section>
+
+<section class="cards">
+
+<div class="card">
+<h3>🌾 Our Mission</h3>
+<p>Empowering farmers with AI-driven solutions for smart farming.</p>
+</div>
+
+<div class="card">
+<h3>🎯 Our Vision</h3>
+<p>Creating a sustainable and technology-enabled agricultural ecosystem.</p>
+</div>
+
+<div class="card">
+<h3>🤖 AI Support</h3>
+<p>Providing intelligent recommendations for crop management.</p>
+</div>
+
+</section>
+
+<section class="stats">
+
+<div class="stat-box">
+<h2>100+</h2>
+<p>Farmers Supported</p>
+</div>
+
+<div class="stat-box">
+<h2>50+</h2>
+<p>Crop Types</p>
+</div>
+
+<div class="stat-box">
+<h2>24/7</h2>
+<p>AI Assistance</p>
+</div>
+
+</section>
+
+<footer>
+
+<h3>AgriAssist AI</h3>
+<p>Smart Farming • Better Future</p>
+
+</footer>
+
+</body>
+</html>

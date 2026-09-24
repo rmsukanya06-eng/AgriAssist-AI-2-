@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Farm - AgriAssist AI</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+display:flex;
+background:#f4fff4;
+}
+
+/* Sidebar */
+
+.sidebar{
+width:250px;
+height:100vh;
+background:#2e7d32;
+position:fixed;
+padding-top:20px;
+}
+
+.sidebar h2{
+text-align:center;
+color:white;
+margin-bottom:30px;
+}
+
+.sidebar a{
+display:block;
+padding:15px 25px;
+color:white;
+text-decoration:none;
+}
+
+.sidebar a:hover{
+background:#1b5e20;
+}
+
+/* Main Content */
+
+.main{
+margin-left:250px;
+padding:30px;
+width:100%;
+}
+
+.main h1{
+color:#2e7d32;
+margin-bottom:20px;
+}
+
+/* Form Card */
+
+.form-card{
+background:white;
+max-width:700px;
+padding:30px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.form-group{
+margin-bottom:15px;
+}
+
+label{
+display:block;
+margin-bottom:5px;
+font-weight:600;
+}
+
+input,
+select,
+textarea{
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+textarea{
+resize:none;
+height:100px;
+}
+
+button{
+background:#2e7d32;
+color:white;
+padding:12px 20px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+}
+
+button:hover{
+background:#1b5e20;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<h2>🌱 AgriAssist AI</h2>
+
+<a href="dashboard.html">🏠 Dashboard</a>
+<a href="profile.html">👤 My Profile</a>
+<a href="farms.html">🚜 My Farms</a>
+<a href="addfarm.html">➕ Add Farm</a>
+<a href="disease.html">🌿 Disease Detection</a>
+<a href="pest.html">🐛 Pest Detection</a>
+<a href="login.html">🚪 Logout</a>
+
+</div>
+
+<div class="main">
+
+<h1>➕ Add New Farm</h1>
+
+<div class="form-card">
+
+<form id="farmForm">
+
+<div class="form-group">
+<label>Farm Name</label>
+<input type="text" id="farmName" required>
+</div>
+
+<div class="form-group">
+<label>Crop Type</label>
+<select id="cropType" required>
+<option value="">Select Crop</option>
+<option>Paddy</option>
+<option>Sugarcane</option>
+<option>Tomato</option>
+<option>Banana</option>
+<option>Cotton</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Farm Area (Acres)</label>
+<input type="number" id="farmArea" required>
+</div>
+
+<div class="form-group">
+<label>Location</label>
+<input type="text" id="location" required>
+</div>
+
+<div class="form-group">
+<label>Description</label>
+<textarea id="description"></textarea>
+</div>
+
+<button type="submit">
+Add Farm
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+<script>
+
+document.getElementById("farmForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const userId = localStorage.getItem("userId");
+    const farmName = document.getElementById("farmName").value.trim();
+    const crop = document.getElementById("cropType").value;
+    const area = document.getElementById("farmArea").value;
+    const location = document.getElementById("location").value.trim();
+    const description = document.getElementById("description").value.trim();
+
+    if (!userId) {
+        alert("❌ Please login first.");
+        window.location.href = "login.html";
+        return;
+    }
+
+    if (!farmName || !crop || !area || !location) {
+        alert("❌ Please fill all required farm fields");
+        return;
+    }
+
+    if (Number(area) <= 0) {
+        alert("❌ Farm area must be greater than 0");
+        return;
+    }
+
+    try {
+        const response = await fetch("/api/farms", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId, farmName, crop, area, location, description })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert("✅ Farm Added Successfully!");
+            document.getElementById("farmForm").reset();
+        } else {
+            alert("❌ " + data.message);
+        }
+    } catch (error) {
+        console.error(error);
+        alert("❌ Cannot connect to server. Make sure Node.js is running.");
+    }
+});
+
+</script>
+
+</body>
+</html>

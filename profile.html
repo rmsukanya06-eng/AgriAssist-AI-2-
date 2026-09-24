@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Profile - AgriAssist AI</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+display:flex;
+background:#f4fff4;
+}
+
+/* Sidebar */
+
+.sidebar{
+width:250px;
+height:100vh;
+background:#2e7d32;
+position:fixed;
+padding-top:20px;
+}
+
+.sidebar h2{
+text-align:center;
+color:white;
+margin-bottom:30px;
+}
+
+.sidebar a{
+display:block;
+padding:15px 25px;
+color:white;
+text-decoration:none;
+}
+
+.sidebar a:hover{
+background:#1b5e20;
+}
+
+/* Main Content */
+
+.main{
+margin-left:250px;
+width:100%;
+padding:30px;
+}
+
+.main h1{
+color:#2e7d32;
+margin-bottom:20px;
+}
+
+.profile-card{
+background:white;
+max-width:700px;
+padding:30px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.profile-pic{
+text-align:center;
+margin-bottom:20px;
+}
+
+.profile-pic img{
+width:120px;
+height:120px;
+border-radius:50%;
+border:4px solid #2e7d32;
+}
+
+.user-info{
+text-align:center;
+margin-bottom:20px;
+}
+
+.user-info h2{
+color:#2e7d32;
+margin-bottom:10px;
+}
+
+.user-info p{
+margin:5px 0;
+}
+
+.form-group{
+margin-bottom:15px;
+}
+
+label{
+display:block;
+margin-bottom:5px;
+font-weight:600;
+}
+
+input{
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+button{
+background:#2e7d32;
+color:white;
+padding:12px 20px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+button:hover{
+background:#1b5e20;
+}
+
+/* =========================
+   PROFILE ANIMATIONS
+========================= */
+
+/* 1. Main profile card comes upward when page loads */
+.profile-card{
+    animation: slideUp 0.8s ease-out;
+}
+
+@keyframes slideUp{
+
+    from{
+        opacity:0;
+        transform:translateY(50px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+
+/* 2. Profile picture gently floats */
+.profile-pic img{
+    animation: floatProfile 3s ease-in-out infinite;
+}
+
+@keyframes floatProfile{
+
+    0%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-10px);
+    }
+
+    100%{
+        transform:translateY(0);
+    }
+
+}
+
+
+/* 3. Profile information fades in */
+.user-info{
+    animation: fadeIn 1.2s ease-in;
+}
+
+@keyframes fadeIn{
+
+    from{
+        opacity:0;
+    }
+
+    to{
+        opacity:1;
+    }
+
+}
+
+
+/* 4. Input box animation when user clicks */
+input{
+    transition:all 0.3s ease;
+}
+
+input:focus{
+    border-color:#2e7d32;
+    box-shadow:0 0 10px rgba(46,125,50,0.25);
+    transform:scale(1.01);
+}
+
+
+/* 5. Button hover animation */
+button{
+    transition:all 0.3s ease;
+}
+
+button:hover{
+    background:#1b5e20;
+    transform:translateY(-3px);
+    box-shadow:0 5px 12px rgba(0,0,0,0.2);
+}
+
+
+/* 6. Sidebar links animation */
+.sidebar a{
+    transition:all 0.3s ease;
+}
+
+.sidebar a:hover{
+    background:#1b5e20;
+    padding-left:32px;
+}
+
+</style>
+</head>
+
+<body ng-app="myApp">
+
+<!-- Sidebar -->
+
+<div class="sidebar">
+
+<h2>🌱 AgriAssist AI</h2>
+
+<a href="dashboard.html">🏠 Dashboard</a>
+<a href="profile.html">👤 My Profile</a>
+<a href="farms.html">🚜 My Farms</a>
+<a href="addfarm.html">➕ Add Farm</a>
+<a href="fertilizer.html">🌱 Fertilizer Calculator</a>
+<a href="disease.html">🌿 Disease Detection</a>
+<a href="pest.html">🐛 Pest Detection</a>
+<a href="weather.html">☁ Weather Advice</a>
+<a href="login.html">🚪 Logout</a>
+
+</div>
+
+<!-- Main Content -->
+
+<div class="main">
+
+<h1>My Profile</h1>
+
+<div class="profile-card" ng-controller="profileCtrl">
+
+<div class="user-info">
+<h3>{{appName}}</h3></div>
+
+<div class="profile-pic">
+<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile">
+</div>
+
+<div class="user-info">
+
+
+<!-- Uppercase Filter -->
+<h2>{{name | uppercase}}</h2>
+
+<!-- Lowercase Filter -->
+<p><strong>Username:</strong> {{name | lowercase}}</p>
+
+<!-- Currency Filter -->
+<p><strong>Membership Fee:</strong> {{membershipfee | currency:"₹"}}</p>
+
+<p><strong>Membership Type:</strong> {{membershipType}}</p>
+
+<p><strong>Membership + Bonus:</strong>
+{{totalFee | currency:"₹"}}
+</p>
+
+<p><strong>Membership after Discount:</strong>
+{{finalFee | currency:"₹"}}
+</p>
+<p><strong>Profile Status:</strong> {{status}}</p>
+</div>
+
+<form id="profileForm">
+
+<div class="form-group">
+<label>Full Name</label>
+<input type="text" ng-model="name" ng-change="updateStatus()">
+</div>
+
+<div class="form-group">
+<label>Email</label>
+<input type="email" ng-model="email" ng-change="updateStatus()">
+</div>
+
+<div class="form-group">
+<label>Mobile Number</label>
+<input type="tel" ng-model="mobile" ng-change="updateStatus()">
+</div>
+
+<div class="form-group">
+<label>Location</label>
+<input type="text" ng-model="location">
+</div>
+
+<div class="form-group">
+<label>Membership fee</label>
+<input type="number"
+       ng-model="membershipfee"
+       ng-change="updateStatus(); updateMembership()">
+</div>
+
+<button type="submit">Update Profile</button>
+
+</form>
+
+</div>
+
+</div>
+
+<script>
+
+var app = angular.module("myApp", []);
+
+/* VALUE */
+app.value("appName", "AgriAssist AI");
+
+/* SERVICE */
+app.service("profileService", function(){
+
+this.getProfileCompletion = function(name, email, mobile, location,membershipfee){
+
+if(name && email && mobile && location && membershipfee)
+return "100% Complete";
+
+else
+return "Incomplete Profile";
+
+};
+
+});
+
+app.factory("membershipFactory", function(){
+
+    return{
+
+        addBonus: function(fee){
+            return Number(fee) + 500;
+        },
+
+        deductDiscount: function(fee){
+            return Number(fee) - 200;
+        },
+
+        getMembershipType: function(fee){
+
+            if(fee >= 50000)
+                return "💎 Platinum Member";
+
+            else if(fee >= 25000)
+                return "🥇 Gold Member";
+
+            else if(fee >= 10000)
+                return "🥈 Silver Member";
+
+            else
+                return "👤 Normal Member";
+
+        }
+
+    };
+
+});
+/* CONTROLLER + DEPENDENCY INJECTION */
+app.controller("profileCtrl", function($scope, appName, profileService, membershipFactory){
+
+$scope.appName = appName;
+
+$scope.name = "Sahoo";
+$scope.email = "sahoo@gmail.com";
+$scope.mobile = "9876543210";
+$scope.location = "Madurai";
+$scope.membershipfee = 25000;
+
+$scope.updateMembership = function(){
+
+    $scope.totalFee =
+    membershipFactory.addBonus($scope.membershipfee);
+
+    $scope.finalFee =
+    membershipFactory.deductDiscount($scope.membershipfee);
+
+    $scope.membershipType =
+    membershipFactory.getMembershipType($scope.membershipfee);
+
+};
+
+// Function to update profile status
+$scope.updateStatus = function(){
+
+$scope.status = profileService.getProfileCompletion(
+$scope.name,
+$scope.email,
+$scope.mobile,
+$scope.location,
+$scope.membershipfee
+);
+
+};
+
+// Call once when page loads
+$scope.updateStatus();
+$scope.updateMembership();
+});document.getElementById("profileForm")
+.addEventListener("submit", function(e){
+
+e.preventDefault();
+
+alert("✅ Profile Updated Successfully!");
+
+});
+
+</script>
+</body>
+</html>
